@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #123160; /* Azul oscuro de fondo */
+    margin: 0;
+    padding: 0;
+}
+
+.simulador-container {
+    background-color: #001f3f; /* Fondo azul oscuro para el contenedor */
+    margin: 50px auto;
+    padding: 20px;
+    width: 350px; /* Ancho reducido del contenedor */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    color: #ffffff; /* Texto blanco dentro del contenedor */
+}
+
+h1 {
+    text-align: center;
+    color: #f1c40f; /* Título en amarillo suave */
+    font-size: 18px; /* Tamaño del título reducido */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f1c40f; /* Color de las etiquetas en amarillo */
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff; /* Fondo blanco para los inputs */
+    font-size: 14px; /* Tamaño de fuente más pequeño */
+    color: #000000; /* Texto negro dentro de los inputs */
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #f1c40f; /* Botón en color amarillo suave */
+    color: #001f3f; /* Texto del botón en azul oscuro */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #f39c12; /* Efecto hover en un tono más oscuro de amarillo */
+}
+
+.resultado {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #d1ecf1; /* Celeste suave para el cuadro del resultado */
+    color: #0c5460; /* Texto oscuro */
+    border: 1px solid #bee5eb;
+    border-radius: 5px;
+    display: none;
+    text-align: center; /* Centrar el texto */
+    font-weight: bold; /* Mostrar en negrita */
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #ffffff; /* Fondo blanco para el cuadro del Plan de Pagos */
+}
+
+table, th, td {
+    border: 1px solid #001f3f; /* Borde azul oscuro */
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f1c40f; /* Fondo amarillo para encabezados */
+    color: #001f3f; /* Texto azul oscuro en los encabezados */
+}
+
+td {
+    background-color: #ffffff; /* Fondo blanco para las celdas */
+    color: #001f3f; /* Texto azul oscuro */
+}
+
+tr:nth-child(even) {
+    background-color: #fff176; /* Alterna con amarillo claro */
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+footer p {
+    font-size: 12px; /* Tamaño de fuente más pequeño para los créditos */
+    color: #ffffff;
+}
+
+/* Tamaño del logo */
+img {
+    width: 70%; /* Ajusta el tamaño del logo como desees */
+    max-width: 100px; /* Ajusta este valor según el tamaño deseado */
+    height: auto; /* Mantiene la proporción de la imagen */
+}

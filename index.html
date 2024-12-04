@@ -1,0 +1,252 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Crédito</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Color de fondo azul oscuro */
+        body {
+            background-color: #123160; /* Azul oscuro */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilos para el logo */
+        .logo {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logo img {
+            width: 200px; /* Tamaño original del logo */
+            height: auto;
+        }
+
+        /* Estilos para el simulador con fondo azul oscuro */
+        .simulador-container {
+            background-color: #123160; /* Fondo azul oscuro */
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color: white; /* Texto en blanco para contraste */
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: white; /* Títulos en blanco */
+        }
+
+        label {
+            color: white; /* Etiquetas en blanco */
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botón de calcular en amarillo */
+        button {
+            background-color: yellow; /* Botón en amarillo */
+            color: #123160;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #f0f0b0; /* Efecto hover */
+        }
+
+        /* Estilos del footer */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        /* Estilos para la tabla del cronograma */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: white; /* Fondo blanco para la tabla */
+            color: #123160; /* Texto en color azul oscuro */
+        }
+
+        /* Encabezados de la tabla en amarillo */
+        table th {
+            background-color: yellow; /* Encabezados en amarillo */
+            color: #123160;
+            border: 2px solid #0d1b2a; /* Borde en azul noche */
+            padding: 10px;
+        }
+
+        /* Celdas de la tabla */
+        table td {
+            background-color: white; /* Fondo blanco para las celdas */
+            color: #123160; /* Texto en azul oscuro */
+            border: 2px solid #0d1b2a; /* Contorno de las celdas en azul noche */
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+    <!-- Sección del logo -->
+    <div class="logo">
+        <img src="https://i.ibb.co/qDYLJrT/logo-fast-capital.png" alt="Logo Fast Capital">
+    </div>
+
+    <!-- Contenedor del simulador con fondo azul oscuro -->
+    <div class="simulador-container">
+        <h1>Simulador de Crédito FastCapital</h1>
+        <div class="form-group">
+            <label for="monto">Monto del Préstamo:</label>
+            <input type="number" id="monto" placeholder="Ingrese el monto" required>
+        </div>
+        <div class="form-group">
+            <label for="frecuencia">Frecuencia de Pago:</label>
+            <select id="frecuencia">
+                <option value="semanal">Semanal</option>
+                <option value="quincenal">Quincenal</option>
+                <option value="mensual">Mensual</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="plazo">N° de Cuotas:</label>
+            <input type="number" id="plazo" placeholder="Ingrese el plazo" required>
+        </div>
+        <div class="form-group">
+            <label for="tasa">Tasa Mensual (%):</label>
+            <input type="number" id="tasa" placeholder="Ingrese la tasa mensual" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="resultado">Cuota:</label>
+            <span id="resultado"></span> <!-- Aquí se mostrará la cuota -->
+        </div>
+
+        <div class="form-group">
+            <label for="totalInteres">Total Intereses:</label>
+            <span id="totalInteres"></span> <!-- Aquí se mostrará el total de intereses -->
+        </div>
+
+        <button onclick="calcularCuota()">Calcular Cuota</button>
+
+
+        <h2>Plan de Pagos</h2>
+        <table id="cronograma">
+            <thead>
+                <tr>
+                    <th>N° Cuota</th>
+                    <th>Cuota</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody id="cronograma-body">
+                <!-- Aquí se generarán las filas del cronograma -->
+            </tbody>
+        </table>
+              
+    </div>
+
+    <footer>
+        <p>Diseño y Desarrollo por AXEDE - 2024</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function calcularCuota() {
+            const monto = parseFloat(document.getElementById('monto').value);
+            const frecuencia = document.getElementById('frecuencia').value;
+            const plazo = parseInt(document.getElementById('plazo').value);
+            const tasaMensual = parseFloat(document.getElementById('tasa').value) / 100;
+
+            let divisorFrecuencia;
+            if (frecuencia === 'semanal') {
+                divisorFrecuencia = 4; // Cuatro semanas en un mes
+            } else if (frecuencia === 'quincenal') {
+                divisorFrecuencia = 2; // Dos quincenas en un mes
+            } else if (frecuencia === 'mensual') {
+                divisorFrecuencia = 1; // Un mes
+            }
+
+            const cuota = (monto + (tasaMensual * monto * plazo / divisorFrecuencia)) / plazo;
+            const totalInteres = tasaMensual * monto * plazo / divisorFrecuencia;
+
+            // Mostrar solo el valor de cuota y total de intereses
+            document.getElementById('resultado').innerHTML = `S/. ${cuota.toFixed(2)}`;
+            document.getElementById('totalInteres').innerHTML = `S/. ${totalInteres.toFixed(2)}`;
+
+            generarCronograma(plazo, cuota, monto, totalInteres);
+        }
+
+        function generarCronograma(plazo, cuota, monto, totalInteres) {
+            const cronogramaBody = document.getElementById('cronograma-body');
+            cronogramaBody.innerHTML = '';
+
+            let saldo = monto + totalInteres;
+
+            for (let i = 1; i <= plazo; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${i}</td>
+                    <td>S/. ${cuota.toFixed(2)}</td>
+                    <td>S/. ${Math.max(saldo - cuota, 0).toFixed(2)}</td>
+                `;
+                cronogramaBody.appendChild(row);
+                saldo -= cuota;
+            }
+
+            if (plazo > 0) {
+                const lastRow = cronogramaBody.lastElementChild;
+                lastRow.lastElementChild.innerHTML = 'S/. 0.00';
+            }
+        }
+
+        function generarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const monto = document.getElementById('monto').value;
+            const frecuencia = document.getElementById('frecuencia').value;
+            const plazo = document.getElementById('plazo').value;
+            const tasa = document.getElementById('tasa').value;
+            const cuotaTexto = document.getElementById('resultado').innerText;
+            const cuota = cuotaTexto.trim(); // Tomar solo el texto de cuota
+            const totalInteresTexto = document.getElementById('totalInteres').innerText;
+            const totalInteres = totalInteresTexto.trim(); // Tomar solo el texto de total de intereses
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.text('Simulador de Crédito FastCapital', doc.internal.pageSize.getWidth() / 2, 10, null, null, 'center');
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(12);
+            doc.text(`Monto del Préstamo: S/. ${monto}`, 10, 40);
+            doc.text(`Frecuencia de Pago: ${frecuencia}`, 10, 50);
+            doc.text(`N° de Cuotas: ${plazo}`, 10, 60);
+            doc.text(`Tasa Mensual: ${tasa}%`, 10, 70);
+            doc.text(`Cuota: S/. ${cuota}`, 10, 80); // Solo muestra el valor de cuota
+            doc.text(`Total Intereses: S/. ${totalInteres}`, 10, 90); // Solo muestra el valor de intereses
+
+            doc.autoTable({ html: '#cronograma' });
+            doc.save('simulador_credito.pdf');
+        }
+    </script>
+</body>
+</html>
